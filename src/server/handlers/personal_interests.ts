@@ -1,9 +1,19 @@
 
 import { badRequest } from 'boom'
 
-export async function create() {
+import { ingest, findOne, findAll, findAllForPlayer, buildRequest } from '../../personal_interest'
+
+export async function create(req) {
 
   try {
+
+    const personal_interest = await ingest(req.payload)
+
+    return {
+
+      personal_interest
+
+    }
 
   } catch(error) {
 
@@ -15,9 +25,17 @@ export async function create() {
 
 }
 
-export async function show() {
+export async function show(req) {
 
   try {
+
+    const personal_interests = await findOne(req.params)
+
+    return {
+
+      personal_interests
+
+    }
 
   } catch(error) {
 
@@ -29,9 +47,17 @@ export async function show() {
 
 }
 
-export async function index() {
+export async function index(req) {
 
   try {
+
+    const personal_interests = await findAll(req.query)
+
+    return {
+
+      personal_interests
+
+    }
 
   } catch(error) {
 
@@ -43,9 +69,17 @@ export async function index() {
 
 }
 
-export async function forPlayer() {
+export async function forPlayer(req) {
 
   try {
+
+    const personal_interests = await findAllForPlayer(req.params)
+
+    return {
+
+      personal_interests
+
+    }
 
   } catch(error) {
 
@@ -57,9 +91,14 @@ export async function forPlayer() {
 
 }
 
-export async function build() {
+export async function build(req) {
+  // Return BIP270 Payment Request
 
   try {
+
+    const paymentRequest = await buildRequest(req.params)
+
+    return paymentRequest
 
   } catch(error) {
 
@@ -70,3 +109,4 @@ export async function build() {
   }
 
 }
+

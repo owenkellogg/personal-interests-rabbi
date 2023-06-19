@@ -1,5 +1,5 @@
 import { writeFileSync } from 'fs'
-import { PersonalInterestsApp } from '../src/contracts/personalInterestsApp'
+import { PersonalInterest } from '../src/contracts/personalInterest'
 import { privateKey } from './privateKey'
 import { bsv, TestWallet, DefaultProvider, sha256 } from 'scrypt-ts'
 
@@ -11,19 +11,25 @@ function getScriptHash(scriptPubKeyHex: string) {
     return res.reverse().join('')
 }
 
+class Wallet extends TestWallet {
+  get network() {
+    return bsv.Networks.mainnet
+  }
+}
+
 async function main() {
-    await PersonalInterestsApp.compile()
+    await PersonalInterest.compile()
 
     // Prepare signer. 
     // See https://scrypt.io/docs/how-to-deploy-and-call-a-contract/#prepare-a-signer-and-provider
-    const signer = new TestWallet(privateKey, new DefaultProvider({
-        network: bsv.Networks.testnet
+    const signer = new Wallet(privateKey, new DefaultProvider({
+        network: bsv.Networks.mainnet
     }))
 
     // TODO: Adjust the amount of satoshis locked in the smart contract:
     const amount = 100
 
-    const instance = new PersonalInterestsApp(
+    const instance = new PersonalInterest(
         // TODO: Pass constructor parameter values.
         0n
     )

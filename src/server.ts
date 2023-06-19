@@ -15,8 +15,6 @@ const Pack = require('../package');
 
 import { load } from './server/handlers'
 
-import { plugin as socketio } from './socket.io/plugin'
-
 const handlers = load(join(__dirname, './server/handlers'))
 
 export const server = new Server({
@@ -71,13 +69,13 @@ if (config.get('prometheus_enabled')) {
   server.route({
     method: 'POST',
     path: '/api/personal-interests',
-    handler: handlers.personalinterests.create
+    handler: handlers.PersonalInterests.create
   })
 
   server.route({
     method: 'GET',
     path: '/api/players/{address}/personal-interests',
-    handler: handlers.personalinterests.forPlayer
+    handler: handlers.PersonalInterests.forPlayer
   })
 
 }
@@ -137,8 +135,6 @@ export async function start() {
 
     log.info('server.api.documentation.swagger', swaggerOptions)
   }
-
-  await server.register(socketio);
 
   await server.start();
 

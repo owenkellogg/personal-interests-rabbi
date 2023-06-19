@@ -8,7 +8,7 @@ import {
     SigHash
 } from 'scrypt-ts'
 
-export class PersonalInterestsApp extends SmartContract {
+export class PersonalInterest extends SmartContract {
     @prop(true)
     count: bigint
 
