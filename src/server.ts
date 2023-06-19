@@ -50,6 +50,36 @@ if (config.get('prometheus_enabled')) {
     }
   })
 
+  server.route({
+    method: 'GET',
+    path: '/api/personal-interests',
+    handler: handlers.PersonalInterests.index
+  })
+
+  server.route({
+    method: 'GET',
+    path: '/api/personal-interests/new',
+    handler: handlers.PersonalInterests.build
+  })
+
+  server.route({
+    method: 'GET',
+    path: '/api/personal-interests/{txid}',
+    handler: handlers.PersonalInterests.show
+  })
+
+  server.route({
+    method: 'POST',
+    path: '/api/personal-interests',
+    handler: handlers.personalinterests.create
+  })
+
+  server.route({
+    method: 'GET',
+    path: '/api/players/{address}/personal-interests',
+    handler: handlers.personalinterests.forPlayer
+  })
+
 }
 
 server.route({
