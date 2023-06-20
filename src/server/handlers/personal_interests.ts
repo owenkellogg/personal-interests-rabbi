@@ -31,6 +31,8 @@ export async function show(req) {
 
     const personal_interests = await findOne(req.params)
 
+    console.log({ personal_interests })
+
     return {
 
       personal_interests

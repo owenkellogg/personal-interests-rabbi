@@ -10,6 +10,8 @@ import { start as actors } from '../rabbi/actors'
 
 import { start as main } from '../main'
 
+import { fetch } from 'powco'
+
 program
   .version(version)
   .option('--config <path>')
@@ -58,5 +60,18 @@ program
     actors()
 
   })
+
+program
+  .command('parse-transaction <txid>')
+  .action(async (txid) => {
+
+    const txhex = await fetch(txid)
+
+    console.log(txhex)
+
+
+  })
+
+
 
 program.parse(process.argv)
