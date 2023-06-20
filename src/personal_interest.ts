@@ -42,12 +42,20 @@ export async function findAllForPlayer({ address }: { address: string }) {
 }
 
 interface BuildPersonalInterest {
-  address: string;
+  pubKey: string;
   topic: string;
   value: number;
 }
 
 export async function buildRequest(args: BuildPersonalInterest) {
+
+  const instance = PersonalInterest.build(args.pubKey, args.topic)
+
+  const script = instance.lockingScript.toHex()
+
+  return {
+    script
+  }
 
 }
 

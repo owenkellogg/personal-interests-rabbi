@@ -37,6 +37,8 @@
       "prompt-async": "^0.9.9",
       "rabbi": "^1.21.1",
       "scrypt-ts": "^0.2.2-beta.2",
+      "sequelize": "^6.32.1",
+      "sequelize-cli": "^6.6.1",
       "socket.io": "^4.5.4",
       "socket.io-client": "^4.5.4",
       "winston": "^3.3.3",

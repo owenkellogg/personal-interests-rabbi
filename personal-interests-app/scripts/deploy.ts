@@ -29,9 +29,9 @@ async function main() {
     // TODO: Adjust the amount of satoshis locked in the smart contract:
     const amount = 100
 
-    const instance = new PersonalInterest(
-        PubKey(toByteString('02e5d4eae68dbcced3e549e19777bcb3ef0b6d2f275cb5df8de3403f43926ebc79')),
-        toByteString("gay", true)
+    const instance = PersonalInterest.build(
+        '02e5d4eae68dbcced3e549e19777bcb3ef0b6d2f275cb5df8de3403f43926ebc79',
+        'gay'
     )
 
     // Connect to a signer.

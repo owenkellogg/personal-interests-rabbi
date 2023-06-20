@@ -56,7 +56,7 @@ if (config.get('prometheus_enabled')) {
 
   server.route({
     method: 'GET',
-    path: '/api/personal-interests/new',
+    path: '/api/personal-interests/new/{pubKey}/{topic}/{value}',
     handler: handlers.PersonalInterests.build
   })
 
