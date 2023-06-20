@@ -1,7 +1,7 @@
 import { writeFileSync } from 'fs'
 import { PersonalInterest } from '../src/contracts/personalInterest'
 import { privateKey } from './privateKey'
-import { bsv, TestWallet, DefaultProvider, sha256 } from 'scrypt-ts'
+import { bsv, TestWallet, DefaultProvider, sha256, hash160, toByteString, PubKey } from 'scrypt-ts'
 
 function getScriptHash(scriptPubKeyHex: string) {
     const res = sha256(scriptPubKeyHex).match(/.{2}/g)
@@ -30,8 +30,8 @@ async function main() {
     const amount = 100
 
     const instance = new PersonalInterest(
-        // TODO: Pass constructor parameter values.
-        0n
+        PubKey(toByteString('02e5d4eae68dbcced3e549e19777bcb3ef0b6d2f275cb5df8de3403f43926ebc79')),
+        toByteString("gay", true)
     )
 
     // Connect to a signer.

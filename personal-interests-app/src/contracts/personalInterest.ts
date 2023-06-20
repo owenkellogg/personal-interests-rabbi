@@ -2,30 +2,32 @@ import {
     method,
     prop,
     SmartContract,
+    PubKey,
+    Sig,
     hash256,
     assert,
     ByteString,
-    SigHash
+    SigHash,
 } from 'scrypt-ts'
 
 export class PersonalInterest extends SmartContract {
-    @prop(true)
-    count: bigint
 
-    constructor(count: bigint) {
-        super(count)
-        this.count = count
+    @prop()
+    pubKey: PubKey;
+
+    @prop()
+    topic: ByteString;
+
+    constructor(pubKey: PubKey, topic: ByteString) {
+        super(...arguments)
+        this.pubKey = pubKey
+        this.topic = topic
     }
 
-    @method(SigHash.SINGLE)
-    public increment() {
-        this.count++
+    @method()
+    public unlock(sig: Sig) {
 
-        // make sure balance in the contract does not change
-        const amount: bigint = this.ctx.utxo.value
-        // output containing the latest state
-        const output: ByteString = this.buildStateOutput(amount)
-        // verify current tx has this single output
-        assert(this.ctx.hashOutputs === hash256(output), 'hashOutputs mismatch')
+      assert(this.checkSig(sig, this.pubKey), 'signature invalid')
+
     }
 }

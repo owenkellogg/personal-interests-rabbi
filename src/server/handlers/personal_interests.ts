@@ -29,13 +29,19 @@ export async function show(req) {
 
   try {
 
-    const personal_interests = await findOne(req.params)
+    const { txhex, instance } = await findOne(req.params)
 
-    console.log({ personal_interests })
+    const { txid } = req.params
 
     return {
 
-      personal_interests
+      txid,
+
+      txhex,
+
+      pubKey: instance.pubKey,
+
+      topic: Buffer.from(instance.topic, 'hex').toString('utf8')
 
     }
 
