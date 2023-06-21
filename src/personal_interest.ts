@@ -70,18 +70,26 @@ export async function fromTx({ txid, index }: { txid: string, index?: number }):
   console.log(interest)
   console.log(Object.keys(interest))
 
-    const record = await models.PersonalInterest.create({
-      txid,
-      //@ts-ignore
-      txhex: interest.from.tx.serialize(),
-      txindex: index,
-      topic: Buffer.from(interest.topic, 'hex').toString('utf8'),
-      pubKey: interest.pubKey,
-      //@ts-ignore
-      value: interest.tx.outputs[index].satoshis
-    }) 
+    try {
 
-    return record
+      const record = await models.PersonalInterest.create({
+        txid,
+        //@ts-ignore
+        //txhex: interest.from.tx.serialize(),
+        txindex: index,
+        topic: Buffer.from(interest.topic, 'hex').toString('utf8'),
+        pubKey: interest.pubKey,
+        //@ts-ignore
+        //value: interest.tx.outputs[index].satoshis
+      }) 
+
+      return record
+
+    } catch(error) {
+
+      console.error(error)
+
+    }
 
   }))
 

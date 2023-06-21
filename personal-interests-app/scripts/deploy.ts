@@ -31,7 +31,7 @@ async function main() {
 
     const instance = PersonalInterest.build(
         '02e5d4eae68dbcced3e549e19777bcb3ef0b6d2f275cb5df8de3403f43926ebc79',
-        process.argv[2] || 'machine-learning'
+        process.argv[2] || 'neural-networks'
     )
 
     // Connect to a signer.
