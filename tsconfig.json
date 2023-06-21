@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "target": "es6",

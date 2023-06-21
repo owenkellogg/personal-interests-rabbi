@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   PersonalInterest.init({
     txid: DataTypes.STRING,
     txhex: DataTypes.TEXT,
+    txindex: DataTypes.INTEGER,
     pubKey: DataTypes.STRING,
     topic: DataTypes.STRING,
     spend_txid: DataTypes.STRING

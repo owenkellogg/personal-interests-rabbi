@@ -9,21 +9,81 @@ import { PersonalInterest } from '../personal-interests-app/src/contracts/person
 
 import { bsv } from 'scrypt-ts'
 
+import models from './models'
+
 PersonalInterest.loadArtifact(abi)
 
 export async function ingest({ transaction }: { transaction: string }) {
 
 }
 
-export async function findOne({ txid, index }: { txid: string, index?: number }) {
+export async function fetch({ txid }: { txid: string }): Promise<PersonalInterest[]> {
 
   const txhex = await getTransaction(txid)
 
+  console.log({ txhex })
+
   const tx = new bsv.Transaction(txhex)
 
-  const instance = PersonalInterest.fromTx(tx, 0)
+  const interests = tx.outputs.map((output, index) => {
 
-  return { txhex, instance }
+    console.log({ index })
+
+    try {
+
+      const interest = PersonalInterest.fromTx(tx, index)
+
+      return interest
+
+    } catch(error) {
+
+      console.error(error)
+
+      return
+
+    }
+
+  }).filter(output => !!output)
+
+  console.log({ interests })
+
+  return interests
+
+}
+
+export async function fromTx({ txid, index }: { txid: string, index?: number }): Promise<any[]> {
+
+  let records = await models.PersonalInterest.findAll({
+    where: { txid }
+  })
+
+  if (records.length > 0) {
+
+    return records
+
+  }
+
+  const interests = await fetch({ txid })
+
+  return Promise.all(interests.map(async (interest, index) => {
+
+  console.log(interest)
+  console.log(Object.keys(interest))
+
+    const record = await models.PersonalInterest.create({
+      txid,
+      //@ts-ignore
+      txhex: interest.from.tx.serialize(),
+      txindex: index,
+      topic: Buffer.from(interest.topic, 'hex').toString('utf8'),
+      pubKey: interest.pubKey,
+      //@ts-ignore
+      value: interest.tx.outputs[index].satoshis
+    }) 
+
+    return record
+
+  }))
 
 }
 
@@ -35,9 +95,13 @@ interface FindAll {
 
 export async function findAll({ limit, order, offset }: FindAll) {
 
+  return models.PersonalInterest.findAll()
+
 }
 
-export async function findAllForPlayer({ address }: { address: string }) {
+export async function findAllForPlayer({ pubKey }: { pubKey: string }) {
+
+  return models.PersonalInterest.findAll({ where: { pubKey }})
 
 }
 

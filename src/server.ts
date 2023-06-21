@@ -74,8 +74,54 @@ if (config.get('prometheus_enabled')) {
 
   server.route({
     method: 'GET',
-    path: '/api/players/{address}/personal-interests',
-    handler: handlers.PersonalInterests.forPlayer
+    path: '/api/players',
+    handler: handlers.PersonalInterests.index,
+    options: {
+      tags: ['api', 'players'],
+      validate: {
+        query: Joi.object({
+          offset: Joi.number().optional(),
+          limit: Joi.number().optional()
+        }),
+        failAction: 'log'
+      },
+      response: {
+        failAction: 'log',
+        schema: Joi.object({
+          players: Joi.array().items(Joi.object({
+            pubKey: Joi.string().required(),
+            count: Joi.number().required()
+          }))
+        })
+      }
+    }
+  })
+
+  server.route({
+    method: 'GET',
+    path: '/api/players/{pubKey}/personal-interests',
+    handler: handlers.PersonalInterests.forPlayer,
+    options: {
+      tags: ['api', 'players'],
+      validate: {
+        params: Joi.object({
+          pubKey: Joi.string().required()
+        }),
+        failAction: 'log'
+      },
+      response: {
+        failAction: 'log',
+        schema: Joi.object({
+          personal_interests: Joi.array().items(Joi.object({
+            txid: Joi.string().required(),
+            txhex: Joi.string().required(),
+            pubKey: Joi.string().required(),
+            topic: Joi.string().required(),
+            value: Joi.number().required(),
+          }))
+        })
+      }
+    }
   })
 
 }

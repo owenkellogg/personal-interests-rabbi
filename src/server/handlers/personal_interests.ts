@@ -1,7 +1,7 @@
 
 import { badRequest } from 'boom'
 
-import { ingest, findOne, findAll, findAllForPlayer, buildRequest } from '../../personal_interest'
+import { ingest, fromTx, findAll, findAllForPlayer, buildRequest } from '../../personal_interest'
 
 export async function create(req) {
 
@@ -29,19 +29,11 @@ export async function show(req) {
 
   try {
 
-    const { txhex, instance } = await findOne(req.params)
-
-    const { txid } = req.params
+    const records = await fromTx(req.params)
 
     return {
 
-      txid,
-
-      txhex,
-
-      pubKey: instance.pubKey,
-
-      topic: Buffer.from(instance.topic, 'hex').toString('utf8')
+      personal_interests: records
 
     }
 
